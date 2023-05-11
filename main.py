@@ -104,7 +104,7 @@ def error():
 if __name__ == "__main__":
     global pointer
     global str1
-    print("Enter a line like abaa$, where $ - EOF symbol")
+    print("Enter a line like abaae$, where $ - EOF symbol")
     str1 = input()
     pointer = 0
     S()
