@@ -1,3 +1,5 @@
+from sys import exit
+
 def S():
     c = getchar()                   #в этой грамматике все строки начинаются с "a"
     if c != "a":
@@ -37,10 +39,16 @@ def A_dash():                       #unused lol, оставил для вида
 
 
 def A_doubledash():                 #В данной грамматике мы можем добавить сколько угодно "а", но только идущих подряд
-    c = getchar()                   # A > aA'' > aA' > aaA'' > aaA' > aaaA''... > aaae
-    while c != "e":                 #"e" - эпсилон
-        if c != "a":                #проходим через символы "a", пока не найдем "е"
-            error()                 #нашли "е" - функция А() закончилась
+    global FLLW_A_dd
+    global pointer
+    c = getchar()
+    while True:                     #Крутимся в этой функции, пока не найдем какой-то отличный от "a" символ
+        if c != "a":                #По грамматике мы можем иметь сколько угодно символов "a" подряд
+            if c not in FLLW_A_dd:  #Если нашли отличный от "а" символ:
+                error()             #1) Он не принадлежит FLLW(A) - слово не валидное
+            else:                   #2) Он принадлежит FLLW(A) - выходим из этой функции в некст
+                pointer -= 1
+                return
         c = getchar()
 
 
@@ -59,10 +67,16 @@ def B_dash():
 
 
 def B_doubledash():                 #аналогично функции А()
+    global FLLW_B_dd
+    global pointer
     c = getchar()
-    while c != "e":
+    while True:
         if c != "b":
-            error()
+            if c not in FLLW_B_dd:
+                error()
+            else:
+                pointer -= 1
+                return
         c = getchar()
 
 
@@ -81,10 +95,16 @@ def C_dash():
 
 
 def C_doubledash():                 #аналогично функции A()
+    global FLLW_C_dd
+    global pointer
     c = getchar()
-    while c != "e":
+    while True:
         if c != "c":
-            error()
+            if c not in FLLW_C_dd:
+                error()
+            else:
+                pointer -= 1
+                return
         c = getchar()
 
 
@@ -97,15 +117,19 @@ def getchar():
 
 
 def error():
-    print("ERROR OCCURRED\nstr: ", str1, "\npointer value: ", pointer)
-    raise Exception()
+    print("ERROR OCCURRED\nstr: ", str1, "\npointer value: ", pointer, "\n")
+    print(str1 + " is not a part of No4 grammar")
+    exit()
 
 
 if __name__ == "__main__":
+    FLLW_A_dd = ["$", "b"]
+    FLLW_B_dd = ["$"]
+    FLLW_C_dd = ["b"]
     global pointer
     global str1
-    print("Enter a line like abaae$, where $ - EOF symbol")
+    print("Enter a line like abaa$, where $ - EOF symbol")
     str1 = input()
     pointer = 0
     S()
-    print("Success!", str1, "is a part of №4 grammar")
+    print("Success!", str1, "is a part of No4 grammar")
